@@ -1,10 +1,15 @@
-"""My test module."""
+"""My main speedtest module."""
 
-import pprint
-import speedtest
-st = speedtest.Speedtest()
-download = st.download() / 1000000
-upload = st.upload() / 1000000
-ping = st.results.dict()['ping']
+from speedtest import Speedtest
+from pprint import pprint
 
-print (f"Download: {download:.3f} Mb/s  Upload: {upload:.3f} Mb/s Ping: {ping} ms")
+def internet_speed ():
+    """Return speed test results as a dictionary."""
+    st = Speedtest()  
+    download=st.download()
+    upload=st.upload()
+    results=st.results.dict()
+
+    return ({'timestamp': results['timestamp'], 'download_bps': download, 'upload_bps': upload, 'ping_ms': results['ping']})
+
+pprint (internet_speed())
