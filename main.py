@@ -1,15 +1,19 @@
 """My main speedtest module."""
+import subprocess
+import json
 
-from speedtest import Speedtest
-from pprint import pprint
+response = subprocess.Popen('speedtest -f json', shell=True, stdout=subprocess.PIPE).stdout.read()
 
-def internet_speed ():
-    """Return speed test results as a dictionary."""
-    st = Speedtest()  
-    download=st.download()
-    upload=st.upload()
-    results=st.results.dict()
+response_dict = json.loads(response)
 
-    return ({'timestamp': results['timestamp'], 'download_bps': download, 'upload_bps': upload, 'ping_ms': results['ping']})
+print (f"Timestamp: {response_dict['timestamp']}")
+print (f"Ping: jitter: {response_dict['ping']['jitter']} latency: {response_dict['ping']['latency']}")
+print (f"Download: bandwidth: {response_dict['download']['bandwidth']}")
+print (f"Download: bytes: {response_dict['download']['bytes']}")
+print (f"Download: elapsed: {response_dict['download']['elapsed']}")
+print (f"Upload: bandwidth: {response_dict['upload']['bandwidth']}")
+print (f"Upload: bytes: {response_dict['upload']['bytes']}")
+print (f"Upload: elapsed: {response_dict['upload']['elapsed']}")
 
-pprint (internet_speed())
+
+
